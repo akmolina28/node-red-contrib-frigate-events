@@ -1,0 +1,85 @@
+<script type="text/javascript">
+  RED.nodes.registerType("frigate-zone-transition", {
+    category: "frigate",
+    color: "#3FADB5",
+    defaults: {
+      name: { value: "" },
+      camera: { value: "" },
+      label: { value: "" },
+      fromZone: { value: "" },
+      toZone: { value: "" },
+      exclusive: { value: true },
+    },
+    paletteLabel: "zone transition",
+    inputs: 1,
+    outputs: 2,
+    icon: "font-awesome/fa-video-camera",
+    label: function () {
+      return this.name || "zone transition";
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="frigate-zone-transition">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-label"><i class="fa fa-tag"></i> Label</label>
+    <input type="text" id="node-input-label" placeholder="person" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-camera"><i class="fa fa-tag"></i> Camera</label>
+    <input type="text" id="node-input-camera" placeholder="driveway" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-fromZone"><i class="fa fa-tag"></i> From Zone</label>
+    <input type="text" id="node-input-fromZone" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-toZone"><i class="fa fa-tag"></i> To Zone</label>
+    <input type="text" id="node-input-toZone" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-exclusive">
+      <i class="fa fa-tag"></i> Exclusive
+    </label>
+    <input type="checkbox" id="node-input-exclusive" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="frigate-zone-transition">
+  <p>Match objects which move in/out of zones</p>
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt class="required">
+      payload
+      <span class="property-type">JSON</span>
+    </dt>
+    <dd>the payload from the MQTT topic frigate/events</dd>
+  </dl>
+
+  <h3>Configuration</h3>
+  <dl class="message-properties">
+    <dt class="optional">Label<span class="property-type">string</span></dt>
+    <dd>Object type filter, e.g. person, car</dd>
+    <dt class="optional">Camera<span class="property-type">string</span></dt>
+    <dd>Camera name filter</dd>
+    <dt class="optional">From Zone<span class="property-type">string</span></dt>
+    <dd>
+      Filter the zone which the object is exiting. Use wildcard "*" to match ANY
+      zone. Leave blank to match NO zone.
+    </dd>
+    <dt class="optional">To Zone<span class="property-type">string</span></dt>
+    <dd>
+      Filter the zone which the object is entering. Use wildcard "*" to match
+      ANY zone. Leave blank to match NO zone.
+    </dd>
+    <dt>Exclusive<span class="property-type">string</span></dt>
+    <dd>
+      If checked, filters out transitions where the To-Zone has already been
+      visited.
+    </dd>
+  </dl>
+</script>
