@@ -1,23 +1,24 @@
 <script type="text/javascript">
-  RED.nodes.registerType("frigate-zone-transition", {
-    category: "frigate",
-    color: "#3FADB5",
+  RED.nodes.registerType('frigate-zone-transition', {
+    category: 'frigate',
+    color: '#3FADB5',
     defaults: {
-      name: { value: "" },
-      camera: { value: "" },
-      label: { value: "" },
-      fromZone: { value: "" },
-      toZone: { value: "" },
+      name: { value: '' },
+      camera: { value: '' },
+      label: { value: '' },
+      fromZone: { value: '' },
+      toZone: { value: '' },
       exclusive: { value: true },
+      mustExit: { value: true }
     },
-    paletteLabel: "zone transition",
+    paletteLabel: 'zone transition',
     inputs: 1,
     outputs: 2,
-    icon: "font-awesome/fa-video-camera",
+    icon: 'font-awesome/fa-video-camera',
     label: function () {
-      return this.name || "zone transition";
-    },
-  });
+      return this.name || 'zone transition'
+    }
+  })
 </script>
 
 <script type="text/html" data-template-name="frigate-zone-transition">
@@ -30,22 +31,38 @@
     <input type="text" id="node-input-label" placeholder="person" />
   </div>
   <div class="form-row">
-    <label for="node-input-camera"><i class="fa fa-tag"></i> Camera</label>
+    <label for="node-input-camera"
+      ><i class="fa fa-video-camera"></i> Camera</label
+    >
     <input type="text" id="node-input-camera" placeholder="driveway" />
   </div>
   <div class="form-row">
-    <label for="node-input-fromZone"><i class="fa fa-tag"></i> From Zone</label>
+    <label for="node-input-fromZone"
+      ><i class="fa fa-sign-out"></i> From Zone</label
+    >
     <input type="text" id="node-input-fromZone" />
   </div>
   <div class="form-row">
-    <label for="node-input-toZone"><i class="fa fa-tag"></i> To Zone</label>
+    <label></label>
+    <input
+      type="checkbox"
+      id="node-input-mustExit"
+      style="display:inline-block; width:20px; vertical-align:baseline;"
+    />
+    <label style="width: auto" for="node-input-mustExit">Must exit</label>
+  </div>
+  <div class="form-row">
+    <label for="node-input-toZone"><i class="fa fa-sign-in"></i> To Zone</label>
     <input type="text" id="node-input-toZone" />
   </div>
   <div class="form-row">
-    <label for="node-input-exclusive">
-      <i class="fa fa-tag"></i> Exclusive
-    </label>
-    <input type="checkbox" id="node-input-exclusive" />
+    <label></label>
+    <input
+      type="checkbox"
+      id="node-input-exclusive"
+      style="display:inline-block; width:20px; vertical-align:baseline;"
+    />
+    <label style="width: auto" for="node-input-exclusive">Exclusive mode</label>
   </div>
 </script>
 

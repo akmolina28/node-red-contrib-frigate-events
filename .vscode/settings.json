@@ -1,6 +1,17 @@
 {
   "eslint.format.enable": true,
   "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  }
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "mochaExplorer.files": "build/**/*.spec.js",
+  "mochaExplorer.watch": "build/**/*.spec.js",
+  "mochaExplorer.require": "source-map-support/register",
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "editor.formatOnPaste": false, // required
+  "editor.formatOnType": false, // required
+  "editor.formatOnSave": true, // optional
+  "editor.formatOnSaveMode": "file", // required to format on save
+  "files.autoSave": "onFocusChange", // optional but recommended
+  "vs-code-prettier-eslint.prettierLast": false // set as "true" to run 'prettier' last not first
 }
