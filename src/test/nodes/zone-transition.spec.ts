@@ -635,7 +635,7 @@ describe("frigate-zone-transition * -> zone", () => {
 });
 
 /**
- * wildcard to wildcard
+ * zone to wildcard
  */
 describe("frigate-zone-transition zone -> *", () => {
   beforeEach((done?: () => void) => {
@@ -867,6 +867,142 @@ describe("frigate-zone-transition zone -> *", () => {
             id: "1234",
             current_zones: ["zone_2"],
             entered_zones: ["zone_1", "zone_2"]
+          },
+          type: "update"
+        }
+      });
+    });
+  });
+});
+
+/**
+ * zone to zone
+ */
+describe("frigate-zone-transition zone -> zone", () => {
+  beforeEach((done?: () => void) => {
+    helper.startServer(done);
+  });
+
+  afterEach((done?: () => void) => {
+    helper.unload();
+    helper.stopServer(done);
+  });
+
+  let flow = [
+    {
+      id: "n1",
+      type: "frigate-zone-transition",
+      name: "zone-transition",
+      wires: [["n2"], ["n3"]],
+      fromZone: "zone_1",
+      toZone: "zone_2",
+      mustExit: true,
+      exclusive: true,
+      direct: true
+    },
+    { id: "n2", type: "helper" },
+    { id: "n3", type: "helper" }
+  ];
+
+  it("should match when moving from fromZone to toZone", (done: Done) => {
+    helper.load(zoneTransition, flow, () => {
+      var n1 = helper.getNode("n1");
+      var n2 = helper.getNode("n2");
+      var n3 = helper.getNode("n3");
+      n2.on("input", (msg: NodeMessageInFlow) => {
+        try {
+          msg.should.have.property("match", true);
+          done();
+        } catch (err: any) {
+          done(err);
+        }
+      });
+      n3.on("input", () => {
+        done(new Error("Node sent output to wrong port"));
+      });
+
+      n1.receive({
+        payload: {
+          before: {
+            id: "1234",
+            current_zones: ["zone_1"],
+            entered_zones: ["zone_1"]
+          },
+          after: {
+            id: "1234",
+            current_zones: ["zone_2"],
+            entered_zones: ["zone_1", "zone_2"]
+          },
+          type: "update"
+        }
+      });
+    });
+  });
+
+  it("should not match when moving from fromZone to toZone indirectly", (done: Done) => {
+    helper.load(zoneTransition, flow, () => {
+      var n1 = helper.getNode("n1");
+      var n2 = helper.getNode("n2");
+      var n3 = helper.getNode("n3");
+      n2.on("input", () => {
+        done(new Error("Node sent output to wrong port"));
+      });
+      n3.on("input", (msg: NodeMessageInFlow) => {
+        try {
+          msg.should.have.property("match", false);
+          done();
+        } catch (err: any) {
+          done(err);
+        }
+      });
+
+      n1.receive({
+        payload: {
+          before: {
+            id: "1234",
+            current_zones: ["zone_3"],
+            entered_zones: ["zone_1", "zone_3"]
+          },
+          after: {
+            id: "1234",
+            current_zones: ["zone_2"],
+            entered_zones: ["zone_1", "zone_3", "zone_2"]
+          },
+          type: "update"
+        }
+      });
+    });
+  });
+
+  it("should match when moving from fromZone to toZone indirectly and direct is false", (done: Done) => {
+    flow[0].direct = false;
+    helper.load(zoneTransition, flow, () => {
+      var n1 = helper.getNode("n1");
+      var n2 = helper.getNode("n2");
+      var n3 = helper.getNode("n3");
+      n2.on("input", (msg: NodeMessageInFlow) => {
+        try {
+          msg.should.have.property("match", true);
+          done();
+        } catch (err: any) {
+          done(err);
+        }
+      });
+      n3.on("input", () => {
+        done(new Error("Node sent output to wrong port"));
+      });
+
+      n1.receive({
+        payload: {
+          before: {
+            id: "1234",
+            current_zones: ["zone_3"],
+            entered_zones: ["zone_1", "zone_3"]
+          },
+          after: {
+            id: "1234",
+            current_zones: ["zone_2"],
+            entered_zones: ["zone_1", "zone_3", "zone_2"]
           },
           type: "update"
         }

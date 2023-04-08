@@ -9,7 +9,8 @@
       fromZone: { value: '' },
       toZone: { value: '' },
       exclusive: { value: true },
-      mustExit: { value: true }
+      mustExit: { value: true },
+      direct: { value: true }
     },
     paletteLabel: 'zone transition',
     inputs: 1,
@@ -63,6 +64,16 @@
       style="display:inline-block; width:20px; vertical-align:baseline;"
     />
     <label style="width: auto" for="node-input-exclusive">Exclusive mode</label>
+  </div>
+  <div class="form-row">
+    <label style="width: auto" for="node-input-direct"
+      ><i class="fa fa-link"></i>Direct</label
+    >
+    <input
+      type="checkbox"
+      id="node-input-direct"
+      style="display:inline-block; width:20px; vertical-align:baseline;"
+    />
   </div>
 </script>
 

@@ -72,7 +72,15 @@ module.exports = (RED: NodeAPI) => {
           if (match && config.fromZone) {
             if (config.fromZone == "*" && beforeCurrentZones.length > 0) {
               match = true;
-            } else if (beforeCurrentZones.indexOf(config.fromZone) >= 0) {
+            } else if (
+              config.direct &&
+              beforeCurrentZones.indexOf(config.fromZone) >= 0
+            ) {
+              match = true;
+            } else if (
+              !config.direct &&
+              beforeEnteredZones.indexOf(config.fromZone) >= 0
+            ) {
               match = true;
             } else {
               match = false;
@@ -140,9 +148,11 @@ module.exports = (RED: NodeAPI) => {
             if (config.fromZone == "*") {
               // make sure any zone was exited
               match = exitedZones.length > 0;
-            } else {
+            } else if (config.direct) {
               // make sure fromZone was exited
               match = exitedZones.indexOf(config.fromZone) >= 0;
+            } else {
+              match = afterCurrentZones.indexOf(config.fromZone) < 0;
             }
           }
 
